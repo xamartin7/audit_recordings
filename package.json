@@ -1,0 +1,24 @@
+{
+  "name": "recording-app",
+  "version": "1.0.0",
+  "description": "Test readme",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "turbo run build",
+    "start": "turbo run start --filter=backend",
+    "dev": "turbo run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.5.0"
+  },
+  "packageManager": "npm@10.5.0"
+}

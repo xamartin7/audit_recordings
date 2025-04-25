@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "shared/*": ["packages/shared/src/*"],
+        "api-types/*": ["packages/api-types/src/*"]
+      },
+      "module": "ESNext",
+      "target": "ESNext",
+      "strict": true,
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "skipLibCheck": true
+    }
+  }

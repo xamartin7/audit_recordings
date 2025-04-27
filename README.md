@@ -25,64 +25,39 @@ https://medium.com/@rudrakshnanavaty/clean-architecture-7c1b3b4cb181
 https://medium.com/@ben.dev.io/clean-architecture-in-node-js-39c3358d46f3
 
 Clean architecture structure + screaming architecture of folders:
-- entities
-- use-cases
-- Interfaces -> controllers, presenters, ..
-    + controllers -> Handle input ports
-    + presenters -> Handle output ports
+- domain -> entities
+- application -> use-cases
+    + Interfaces -> controllers, presenters, ..
+    + use-cases
+        + controllers -> Handle input ports
+        + presenters -> Handle output ports
 - Infrastuctures -> Connection and queries to supabase
 
-Below are an example
-
-/backend
-│   │   ├── /src
-│   │   │   ├── /recordings
-│   │   │   │   ├── /entities
-│   │   │   │   │   ├── Recording.ts
-│   │   │   │   ├── /useCases
-│   │   │   │   │   ├── CreateRecordingUseCase.ts
-│   │   │   │   │   ├── GetRecordingUseCase.ts
-│   │   │   │   │   ├── DeleteRecordingUseCase.ts
-│   │   │   │   ├── /interfaceAdapters
-│   │   │   │   │   ├── /controllers
-│   │   │   │   │   │   ├── RecordingController.ts
-│   │   │   │   │   ├── /presenters
-│   │   │   │   │   │   ├── RecordingPresenter.ts
-│   │   │   │   ├── /frameworks
-│   │   │   │   │   ├── SupabaseRecordingRepository.ts
-│   │   │   ├── /audits
-│   │   │   │   ├── /entities
-│   │   │   │   │   ├── Audit.ts
-│   │   │   │   ├── /useCases
-│   │   │   │   │   ├── CreateAuditUseCase.ts
-│   │   │   │   │   ├── UpdateAuditUseCase.ts
-│   │   │   │   ├── /interfaceAdapters
-│   │   │   │   │   ├── /controllers
-│   │   │   │   │   │   ├── AuditController.ts
-│   │   │   │   │   ├── /presenters
-│   │   │   │   │   │   ├── AuditPresenter.ts
-│   │   │   │   ├── /frameworks
-│   │   │   │   │   ├── SupabaseAuditRepository.ts
-│   │   │   ├── /reports
-│   │   │   │   ├── /entities
-│   │   │   │   │   ├── Report.ts
-│   │   │   │   ├── /useCases
-│   │   │   │   │   ├── GenerateReportUseCase.ts
-│   │   │   │   ├── /interfaceAdapters
-│   │   │   │   │   ├── /controllers
-│   │   │   │   │   │   ├── ReportController.ts
-│   │   │   │   │   ├── /presenters
-│   │   │   │   │   │   ├── ReportPresenter.ts
-│   │   │   │   ├── /frameworks
-│   │   │   │   │   ├── PDFReportGenerator.ts
-│   │   │   ├── /common
-│   │   │   │   ├── /frameworks
+Example with the auth below:
+/auth
+│   │   │   │   │   ├── /domain
+│   │   │   │   │   │   ├── User.ts
+│   │   │   │   │   │   ├── AuthToken.ts
+│   │   │   │   │   ├── /application
+│   │   │   │   │   │   ├── AuthFactory.ts
+│   │   │   │   │   │   ├── LoginWithEmailUseCase.ts
+│   │   │   │   │   │   ├── LoginWithGoogleUseCase.ts
+│   │   │   │   │   │   ├── strategies
+│   │   │   │   │   │   │   ├── LoginStrategy.ts
+│   │   │   │   │   │   │   ├── EmailLoginStrategy.ts
+│   │   │   │   │   │   │   ├── GoogleLoginStrategy.ts
+│   │   │   │   │   │   ├── interfaces
+│   │   │   │   │   │   │   ├── AuthRepository.ts
+│   │   │   │   │   ├── /infrastructure
+│   │   │   │   │   │   ├── /http
+│   │   │   │   │   │   │   ├── AuthController.ts
+│   │   │   │   │   │   ├── /supabase
+│   │   │   │   │   │   │   ├── SupabaseAuthRepository.ts
+│   │   │   │   │   │   ├── /google
+│   │   │   │   │   │   │   ├── GoogleOAuthProvider.ts
+│   │   │   │   ├── /recordings
+│   │   │   │   ├── /audits
+│   │   │   │   ├── /reports
+│   │   │   │   ├── /common
 │   │   │   │   │   ├── express.ts
 │   │   │   │   │   ├── supabaseClient.ts
-│   │   │   │   │   ├── errorHandler.ts
-│   │   │   ├── index.ts
-│   │   ├── package.json
-│   │   ├── tsconfig.json
-│   │   ├── Dockerfile
-│   │   ├── .env
-│   │   └── .eslintrc.js

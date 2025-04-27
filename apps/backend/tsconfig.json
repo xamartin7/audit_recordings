@@ -7,7 +7,12 @@
     "moduleResolution": "node",
     "target": "ES2016",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "shared": ["../packages/shared/src"],
+      "api-types": ["../packages/api-types/src"]
+    }
   },
   "include": ["src"],
   "ts-node": {

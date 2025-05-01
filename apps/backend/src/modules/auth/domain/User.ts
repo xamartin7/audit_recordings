@@ -1,3 +1,6 @@
+import { UserDTO } from "shared/src/User.t";
+
+
 export class User {
     private id: string;
     private created_at: Date;
@@ -7,7 +10,7 @@ export class User {
     private surname: string;
     private second_surname: string;
 
-    constructor(id: string, created_at: Date, email: string, password: string, name: string, surname: string, second_surname: string) {
+    /*constructor(id: string, created_at: Date, email: string, password: string, name: string, surname: string, second_surname: string) {
         this.id = id;
         this.created_at = created_at;
         this.email = email;
@@ -15,6 +18,16 @@ export class User {
         this.name = name;
         this.surname = surname;
         this.second_surname = second_surname;
+    }*/
+
+    public constructor(user: UserDTO) {
+        this.id = user.id;
+        this.created_at = user.created_at;
+        this.email = user.email;
+        this.password = user.password;
+        this.name = user.name;
+        this.surname = user.surname;
+        this.second_surname = user.second_surname;
     }
 
     public getId(): string {

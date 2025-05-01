@@ -12,9 +12,13 @@ export class AuthController {
     }
 
     public async loginWithEmail(req: Request, res: Response) {
-        const { email, password } = req.body;
-        const { user, authToken } = await this.loginWithEmailUseCase.execute({ email, password });
-        res.status(200).json({ user, authToken });
+        try {
+            const { email, password } = req.body;
+            const { user, authToken } = await this.loginWithEmailUseCase.execute({ email, password });
+            res.status(200).json({ user, authToken });
+        } catch (error) {
+            res.status(500).json({ message: (error as Error).message });
+        }
     }
 
     public async loginWithSSOGoogle() {

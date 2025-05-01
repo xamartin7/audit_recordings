@@ -3,19 +3,14 @@ import { AuthRepository } from "../../application/interfaces/AuthRepository";
 import { AuthToken } from "../../domain/AuthToken";
 import { User } from "../../domain/User";
 import jwt from "jsonwebtoken";
+import { EnvConfig } from "../../../../config/EnvConfig";
 
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const SUPABASE_URL = process.env.SUPABASE_URL!;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY!;
 
 export class SupabaseAuthRepository implements AuthRepository {
     private client: SupabaseClient;
 
     public constructor() {
-        this.client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        this.client = createClient(EnvConfig.getSUPABASE_URL(), EnvConfig.getSUPABASE_ANON_KEY());
     }
 
     public async findUserByEmail(email: string): Promise<User | null> {

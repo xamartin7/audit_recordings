@@ -13,6 +13,6 @@ export const setupAuthEP = (app: Express) => {
         new SignupUseCase(new SupabaseAuthRepository())
     );
 
-    app.post('/login', (req: Request, res: Response) => { authController.loginWithEmail(req, res); });
-    app.post('/signup', (req: Request, res: Response) => { authController.signup(req, res); });
+    app.post('/auth/login', (req: Request, res: Response) => { authController.loginWithEmail(req, res); });
+    app.post('/auth/signup', (req: Request, res: Response) => { authController.signup(req, res); });
 };

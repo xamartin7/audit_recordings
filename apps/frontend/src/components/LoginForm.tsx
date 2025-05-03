@@ -10,7 +10,14 @@ export const LoginForm: React.FC = () => {
     const { register, handleSubmit } = useForm<LoginFormData>();
 
     const onSubmit = (data: LoginFormData) => {
-        login(data.email, data.password);
+        login(data.email, data.password)
+        .then(async (response) => {
+            const data = await response.json();
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
     return (

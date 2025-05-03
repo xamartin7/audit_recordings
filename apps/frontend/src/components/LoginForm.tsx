@@ -6,17 +6,24 @@ interface LoginFormData {
     password: string;
 }
 
-export const LoginForm: React.FC = () => {
+export const LoginForm: React.FC<{ setError: (error: string) => void }> = ({ setError }) => {
     const { register, handleSubmit } = useForm<LoginFormData>();
 
     const onSubmit = (data: LoginFormData) => {
+        setError('');
         login(data.email, data.password)
         .then(async (response) => {
             const data = await response.json();
             console.log(data);
+            if (response.status === 200) {
+                console.log('Login successful');
+            } else {
+                setError(data.message);
+            }
         })
         .catch((error) => {
             console.error(error);
+            setError('Error en el servidor');
         });
     }
 

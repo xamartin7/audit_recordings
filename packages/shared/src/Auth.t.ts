@@ -7,3 +7,12 @@ export interface UserDTO {
     surname: string;
     second_surname: string;
 }
+
+export interface SignupData {
+    email: string;
+    password: string;
+    repeatPassword: string;
+    name: string;
+    surname: string;
+    secondSurname: string;
+}

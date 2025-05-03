@@ -10,5 +10,9 @@ export class EnvConfig {
     public static getSUPABASE_ANON_KEY(): string {
         return process.env.SUPABASE_ANON_KEY!;
     }
+
+    public static getJWT_SECRET(): string {
+        return process.env.JWT_SECRET!;
+    }
 }
 

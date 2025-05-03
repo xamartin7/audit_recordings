@@ -31,8 +31,8 @@ export class SupabaseAuthRepository implements AuthRepository {
         const { data, error } = await this.client
             .from('users')
             .insert({
-                id: user.getId(),
-                created_at: user.getCreatedAt(),
+                // id: user.getId(),
+                // created_at: user.getCreatedAt(),
                 email: user.getEmail(),
                 password: user.getPassword(),
                 name: user.getName(),
@@ -52,7 +52,7 @@ export class SupabaseAuthRepository implements AuthRepository {
     public async generateToken(user: User): Promise<AuthToken> {
         const token = jwt.sign(
             { userId: user.getId(), email: user.getEmail() },
-            process.env.JWT_SECRET!,
+            EnvConfig.getJWT_SECRET(),
             { expiresIn: '1h' }
         )
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour

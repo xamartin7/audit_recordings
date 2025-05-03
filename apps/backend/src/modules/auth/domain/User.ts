@@ -1,4 +1,4 @@
-import { UserDTO } from "shared/src/User.t";
+import { UserDTO } from "shared/src/Auth.t";
 
 
 export class User {

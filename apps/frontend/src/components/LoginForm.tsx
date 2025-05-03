@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
+import { login } from '../adapters/api/auth/Login';
 interface LoginFormData {
     email: string;
     password: string;
@@ -10,7 +10,7 @@ export const LoginForm: React.FC = () => {
     const { register, handleSubmit } = useForm<LoginFormData>();
 
     const onSubmit = (data: LoginFormData) => {
-        console.log(data);
+        login(data.email, data.password);
     }
 
     return (

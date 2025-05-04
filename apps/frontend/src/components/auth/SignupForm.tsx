@@ -7,6 +7,10 @@ export function SignupForm({ setError }: { setError: (error: string) => void }) 
 
     const onSubmit = (data: SignupData) => {
         setError('')
+        if (data.password !== data.repeatPassword) {
+            setError('Las contraseñas no coinciden');
+            return;
+        }
         signup(data.email, data.password, data.repeatPassword, data.name, data.surname, data.secondSurname)
         .then(async (response) => {
             const data = await response.json();

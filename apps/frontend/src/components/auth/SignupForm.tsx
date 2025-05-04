@@ -1,11 +1,25 @@
 import { useForm } from "react-hook-form";
 import { SignupData } from "shared/src/Auth.t";
+import { signup } from "../../adapters/api/auth/Signup";
 
-export function SignupForm() {
+export function SignupForm({ setError }: { setError: (error: string) => void }) {
     const { register, handleSubmit } = useForm<SignupData>();
 
     const onSubmit = (data: SignupData) => {
-        console.log(data);
+        setError('')
+        signup(data.email, data.password, data.repeatPassword, data.name, data.surname, data.secondSurname)
+        .then(async (response) => {
+            const data = await response.json();
+            console.log(data);
+        })
+        .catch((error) => {
+            if (error.type === 'validation') {
+                setError((error.errors as { message: string }[]).map(e => e.message).join(', '));
+            } else {
+                console.error(error);
+                setError('Error en el servidor');
+            }
+        });
     }
 
     return (

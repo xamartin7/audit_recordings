@@ -22,8 +22,12 @@ export const LoginForm: React.FC<{ setError: (error: string) => void }> = ({ set
             }
         })
         .catch((error) => {
-            console.error(error);
-            setError('Error en el servidor');
+            if (error.type === 'validation') {
+                setError((error.errors as { message: string }[]).map(e => e.message).join(', '));
+            } else {
+                console.error(error);
+                setError('Error en el servidor');
+            }
         });
     }
 

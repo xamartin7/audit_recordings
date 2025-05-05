@@ -5,11 +5,13 @@ import { Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 export function LoginScreen() {
     const [error, setError] = useState<string>('');
+    const [successMessage, setSuccessMessage] = useState<string>('');
     return (
         <AuthLayout>
             <h1 className="text-2xl font-bold text-center text-gray-900">Login</h1>
             {error && <Alert severity="error">{error}</Alert>}
-            <LoginForm setError={setError}/>
+            <LoginForm setError={setError} setSuccessMessage={setSuccessMessage}/>
+            {successMessage && <Alert severity="success">{successMessage}</Alert>}
             {/* TODO SSO google */}
             <hr className='my-4 border-gray-300'/>   
             <p className='text-center text-gray-500'>

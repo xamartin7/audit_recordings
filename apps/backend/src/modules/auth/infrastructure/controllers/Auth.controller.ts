@@ -33,6 +33,7 @@ export class AuthController {
     }
 
     public async signup(req: Request, res: Response) {
+        // TODO Check if email exists, in the database, only can be  store one email per user
         try {
             const { email, password, repeatPassword, name, surname, secondSurname } = req.body;
             const { user, authToken } = await this.signupUseCase.execute({ email, password, repeatPassword, name, surname, secondSurname });

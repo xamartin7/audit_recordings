@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { login } from '../../adapters/api/auth/Login';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 interface LoginFormData {
     email: string;
     password: string;
 }
 
-export const LoginForm: React.FC<{ setError: (error: string) => void }> = ({ setError }) => {
+export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccessMessage: (message: string) => void }> = ({ setError, setSuccessMessage }) => {
     const { register, handleSubmit } = useForm<LoginFormData>();
+    const [isPending, startTransition] = useTransition();
+    const navigate = useNavigate();
 
     const onSubmit = (data: LoginFormData) => {
         setError('');
-        login(data.email, data.password)
-        .then(async (response) => {
-            const data = await response.json();
+        startTransition(() => {
+            login(data.email, data.password)
+            .then(async (response) => {
+                const data = await response.json();
             console.log(data);
             if (response.status === 200) {
-                console.log('Login successful');
+                setSuccessMessage('Sesión iniciada correctamente');
+                navigate('/home');
             } else {
                 setError(data.message);
             }
@@ -26,8 +32,9 @@ export const LoginForm: React.FC<{ setError: (error: string) => void }> = ({ set
                 setError((error.errors as { message: string }[]).map(e => e.message).join(', '));
             } else {
                 console.error(error);
-                setError('Error en el servidor');
-            }
+                    setError('Error en el servidor');
+                }
+            });
         });
     }
 
@@ -42,9 +49,16 @@ export const LoginForm: React.FC<{ setError: (error: string) => void }> = ({ set
                 <input type="password" id="password" {...register('password')} required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
             <div>
-                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <Button
+                    loading={isPending}
+                    loadingPosition="start"
+                    className="w-full"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                >
                     Login
-                </button>
+                </Button>
             </div>
         </form>
     );

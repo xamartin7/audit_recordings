@@ -1,8 +1,15 @@
 import { useForm } from "react-hook-form";
 import { SignupData } from "shared/src/Auth.t";
 import { signup } from "../../adapters/api/auth/Signup";
+import { Link } from "react-router-dom";
+import { JSX } from "react";
 
-export function SignupForm({ setError }: { setError: (error: string) => void }) {
+interface SignupFormProps {
+    setError: (error: string) => void;
+    setSuccessMessage: (successMessage: JSX.Element) => void;
+}
+
+export function SignupForm({ setError, setSuccessMessage }: SignupFormProps) {
     const { register, handleSubmit } = useForm<SignupData>();
 
     const onSubmit = (data: SignupData) => {
@@ -15,6 +22,14 @@ export function SignupForm({ setError }: { setError: (error: string) => void }) 
         .then(async (response) => {
             const data = await response.json();
             console.log(data);
+            setSuccessMessage(
+                <p>
+                    Usuario creado correctamente.{' '}
+                    <Link to="/login" className="text-indigo-600 underline">
+                        Inicia sesión
+                    </Link>
+                </p>
+            );
         })
         .catch((error) => {
             if (error.type === 'validation') {

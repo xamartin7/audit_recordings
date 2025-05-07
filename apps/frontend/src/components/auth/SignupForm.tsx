@@ -22,14 +22,18 @@ export function SignupForm({ setError, setSuccessMessage }: SignupFormProps) {
         .then(async (response) => {
             const data = await response.json();
             console.log(data);
-            setSuccessMessage(
-                <p>
-                    Usuario creado correctamente.{' '}
-                    <Link to="/login" className="text-indigo-600 underline">
-                        Inicia sesión
-                    </Link>
-                </p>
-            );
+            if (response.status === 200) {
+                setSuccessMessage(
+                    <p>
+                        Usuario creado correctamente.{' '}
+                        <Link to="/login" className="text-indigo-600 underline">
+                            Inicia sesión
+                        </Link>
+                    </p>
+                );
+            } else {
+                setError(data.message);
+            }
         })
         .catch((error) => {
             if (error.type === 'validation') {

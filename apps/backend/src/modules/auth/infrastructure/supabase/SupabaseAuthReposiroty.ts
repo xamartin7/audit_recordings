@@ -77,4 +77,18 @@ export class SupabaseAuthRepository implements AuthRepository {
         // Compare the provided password with the stored hashed password
         return data.password === password; // Note: In production, use proper password hashing
     }
+
+    public async emailExists(email: string): Promise<boolean> {
+        const { data, error } = await this.client
+            .from('users')
+            .select('*')
+            .eq('email', email)
+            .single();
+
+        if (error) {
+            throw new Error(`Failed to check if email exists: ${error.message}`);
+        }
+
+        return data !== null;
+    }
 }

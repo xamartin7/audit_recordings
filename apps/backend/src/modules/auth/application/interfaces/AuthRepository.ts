@@ -7,4 +7,5 @@ export interface AuthRepository {
     generateToken(user: User): Promise<AuthToken>;
     validateGoogleToken(token: string): Promise<User>;
     verifyPassword(email: string, password: string): Promise<boolean>;
+    emailExists(email: string): Promise<boolean>;
 }

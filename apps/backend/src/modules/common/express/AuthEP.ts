@@ -5,12 +5,13 @@ import { LoginWithGoogleUseCase } from "../../auth/application/use-cases/LoginWi
 import { AuthController } from "../../auth/infrastructure/controllers/Auth.controller";
 import { SupabaseAuthRepository } from "../../auth/infrastructure/supabase/SupabaseAuthReposiroty";
 import { SignupUseCase } from "../../auth/application/use-cases/SignupUseCase";
+import { EmailValidator } from "../../auth/application/services/EmailValidator";
 
 export const setupAuthEP = (app: Express) => {
     const authController = new AuthController(
         new LoginWithEmailUseCase(new EmailLoginStrategy(new SupabaseAuthRepository())),
         new LoginWithGoogleUseCase(),
-        new SignupUseCase(new SupabaseAuthRepository())
+        new SignupUseCase(new SupabaseAuthRepository(), new EmailValidator(new SupabaseAuthRepository()))
     );
 
     app.post('/auth/login', (req: Request, res: Response) => { authController.loginWithEmail(req, res); });

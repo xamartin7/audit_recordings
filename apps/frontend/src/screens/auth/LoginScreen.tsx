@@ -10,8 +10,8 @@ export function LoginScreen() {
         <AuthLayout>
             <h1 className="text-2xl font-bold text-center text-gray-900">Login</h1>
             {error && <Alert severity="error">{error}</Alert>}
-            <LoginForm setError={setError} setSuccessMessage={setSuccessMessage}/>
             {successMessage && <Alert severity="success">{successMessage}</Alert>}
+            <LoginForm setError={setError} setSuccessMessage={setSuccessMessage}/>
             {/* TODO SSO google */}
             <hr className='my-4 border-gray-300'/>   
             <p className='text-center text-gray-500'>

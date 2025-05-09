@@ -2,6 +2,8 @@
 // src/supabaseClient.ts
 import { createClient } from '@supabase/supabase-js'
 import { EnvConfig } from '../../utils/EnvConfig';
+import { Button } from '@mui/material';
+import { FaGoogle } from "react-icons/fa";
 
 const supabase = createClient(
   EnvConfig.getEnvVariables().supabaseUrl,
@@ -20,8 +22,13 @@ export function SSOGoogleButton() {
     }
 
     return (
-        <button className="bg-red-500" onClick={handleLogin}>
-            Login with Google
-        </button>
+        <Button
+            onClick={handleLogin}
+            className="w-full"
+            variant="outlined"
+            color="primary">
+                <FaGoogle className="mr-2" />
+                Google
+            </Button>
     );
 }

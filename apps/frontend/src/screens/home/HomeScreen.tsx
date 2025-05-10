@@ -1,8 +1,30 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { createClient } from '@supabase/supabase-js';
+import { EnvConfig } from '../../utils/EnvConfig';
+import { Button } from '@mui/material';
+
+const supabase = createClient(
+    EnvConfig.getEnvVariables().supabaseUrl,
+    EnvConfig.getEnvVariables().supabaseKey
+);
 
 export function HomeScreen() {
     const [active, setActive] = useState('home');
+    const navigate = useNavigate();
+
+    const handleSignOut = async () => {
+        try {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error('Error signing out:', error.message);
+            } else {
+                navigate('/login');
+            }
+        } catch (error) {
+            console.error('Error during sign out:', error);
+        }
+    };
 
     return (
         <div className="flex h-screen bg-gray-100">
@@ -22,9 +44,18 @@ export function HomeScreen() {
             {/* Main content */}
             <div className="flex-1 flex flex-col">
                 {/* Top navigation */}
-                <div className="bg-white shadow-md p-4 flex justify-between">
+                <div className="bg-white shadow-md p-4 flex justify-between items-center">
                     <div className="text-xl font-bold text-gray-900">{active.charAt(0).toUpperCase() + active.slice(1)}</div>
-                    <div className="text-gray-500">Welcome, User</div>
+                    <div className="flex items-center gap-4">
+                        <div className="text-gray-500">Welcome, User</div>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={handleSignOut}
+                        >
+                            Sign Out
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Content area */}

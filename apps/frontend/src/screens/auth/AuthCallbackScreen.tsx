@@ -12,6 +12,8 @@ export function AuthCallbackScreen() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // TODO Get the session access token and save it in the local storage, but before send it to the backend,
+        // validate it and handle the user's session.
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN' && session) {
                 navigate('/home');

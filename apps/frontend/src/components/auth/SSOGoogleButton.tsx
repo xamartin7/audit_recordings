@@ -15,7 +15,7 @@ export function SSOGoogleButton() {
     const [session, setSession] = useState<Session | null>(null)
     const navigate = useNavigate();
 
-    useEffect(() => {
+    /*useEffect(() => {
         // Initial fetch after hydration
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
@@ -40,7 +40,7 @@ export function SSOGoogleButton() {
         })
 
         return () => subscription.unsubscribe()
-    }, [navigate])
+    }, [navigate])*/
 
     async function handleLogin(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()

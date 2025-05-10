@@ -1,5 +1,6 @@
 import { LoginScreen } from "../../screens/auth/LoginScreen";
 import { SignupScreen } from "../../screens/auth/SignupScreen";
+import { AuthCallbackScreen } from "../../screens/auth/AuthCallbackScreen";
 
 const authRoutes = [
     {
@@ -9,6 +10,10 @@ const authRoutes = [
     {
         path: '/signup',
         element: <SignupScreen />,
+    },
+    {
+        path: '/auth/callback',
+        element: <AuthCallbackScreen />,
     }
 ]
 

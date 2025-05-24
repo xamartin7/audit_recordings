@@ -20,15 +20,7 @@ export class LoginWithGoogleUseCase implements OAuthLoginUseCase {
         const decodedToken = AccessTokenDecoder.decode(token);
         let user = await this.authRepository.findUserByEmail(decodedToken.email);
         if (!user) {
-            const data: SignupData = {
-                email: decodedToken.email,
-                password: '',
-                repeatPassword: '',
-                name: decodedToken.full_name,
-                surname: '',
-                secondSurname: ''
-            }
-            user = UserCreator.create(data);
+            user = UserCreator.createFromGoogle(decodedToken.email, decodedToken.full_name);
             user = await this.createUserCase.createUser(user);
         }
         const authToken = await this.authRepository.generateToken(user);

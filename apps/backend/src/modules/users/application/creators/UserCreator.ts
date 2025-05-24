@@ -13,4 +13,16 @@ export class UserCreator {
             second_surname: data.secondSurname,
         });
     }
+
+    public static createFromGoogle(email: string, fullName: string): User {
+        return new User({
+            id: '',
+            created_at: new Date(),
+            email: email,
+            password: '',
+            name: fullName.split(' ')[0],
+            surname: fullName.split(' ')[1],
+            second_surname: fullName.split(' ')[2],
+        });
+    }
 }

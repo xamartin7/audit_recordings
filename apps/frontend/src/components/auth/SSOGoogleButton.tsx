@@ -28,6 +28,7 @@ export function SSOGoogleButton() {
             if (error) {
                 console.error('Error signing in with Google:', error.message)
             }
+            console.log('Google sign in successful:', data)
         } catch (error) {
             console.error('Error during Google sign in:', error)
         }

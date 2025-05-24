@@ -49,6 +49,7 @@ export class SupabaseAuthRepository implements AuthRepository {
         return new User(data);
     }
 
+    // TODO Rellocate to an application layer as a service ?
     public async generateToken(user: User): Promise<AuthToken> {
         const token = jwt.sign(
             { userId: user.getId(), email: user.getEmail() },

@@ -20,3 +20,19 @@ export function login(email: string, password: string) {
         return Promise.reject({ type: 'server', message: 'Error en el servidor' });
     }
 }
+
+export function loginWithGoogle(token: string) {
+    try {
+        const validatedToken = AuthSchema.googleLogin.parse({ token });
+        return fetch('http://localhost:3000/auth/google', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(validatedToken)
+        })
+    } catch (error) {
+        console.error('Error en el login con Google', error);
+        return Promise.reject({ type: 'server', message: 'Error en el servidor' });
+    }
+}

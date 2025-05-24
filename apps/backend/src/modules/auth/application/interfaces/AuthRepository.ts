@@ -1,5 +1,5 @@
 import { AuthToken } from "../../domain/AuthToken";
-import { User } from "../../domain/User";
+import { User } from "../../../users/domain/User";
 
 export interface AuthRepository {
     findUserByEmail(email: string): Promise<User | null>;
@@ -7,4 +7,5 @@ export interface AuthRepository {
     generateToken(user: User): Promise<AuthToken>;
     validateGoogleToken(token: string): Promise<User>;
     verifyPassword(email: string, password: string): Promise<boolean>;
+    emailExists(email: string): Promise<boolean>;
 }

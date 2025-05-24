@@ -16,3 +16,12 @@ export interface SignupData {
     surname: string;
     secondSurname: string;
 }
+
+export interface JWTDecodedToken {
+    email: string;
+    exp: number;
+    phone: string;
+    full_name: string;
+    avatar_url: string;
+    session_id: string;
+}

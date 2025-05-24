@@ -1,7 +1,7 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { AuthRepository } from "../../application/interfaces/AuthRepository";
 import { AuthToken } from "../../domain/AuthToken";
-import { User } from "../../domain/User";
+import { User } from "../../../users/domain/User";
 import jwt from "jsonwebtoken";
 import { EnvConfig } from "../../../../config/EnvConfig";
 
@@ -13,6 +13,9 @@ export class SupabaseAuthRepository implements AuthRepository {
         this.client = createClient(EnvConfig.getSUPABASE_URL(), EnvConfig.getSUPABASE_ANON_KEY());
     }
 
+    /**
+     * @deprecated Use the createUser method in the SupabaseUserRepository instead
+     */
     public async findUserByEmail(email: string): Promise<User | null> {
         const { data, error } = await this.client
             .from('users')
@@ -26,7 +29,10 @@ export class SupabaseAuthRepository implements AuthRepository {
 
         return new User(data);
     }
-
+    
+    /**
+     * @deprecated Use the createUser method in the SupabaseUserRepository instead
+     */
     public async createUser(user: User): Promise<User> {
         const { data, error } = await this.client
             .from('users')

@@ -5,11 +5,13 @@ import { AuthController } from "../../auth/infrastructure/controllers/Auth.contr
 import { SupabaseAuthRepository } from "../../auth/infrastructure/supabase/SupabaseAuthReposiroty";
 import { SignupUseCase } from "../../auth/application/use-cases/SignupUseCase";
 import { EmailValidator } from "../../auth/application/services/EmailValidator";
+import { CreateUserUseCase } from "../../users/application/use-cases/CreateUserUseCase";
+import { SupabaseUserRepository } from "../../users/infrastructure/supabase/SupabaseUserRepository";
 
 export const setupAuthEP = (app: Express) => {
     const authController = new AuthController(
         new LoginWithEmailUseCase(new SupabaseAuthRepository()),
-        new LoginWithGoogleUseCase(new SupabaseAuthRepository()),
+        new LoginWithGoogleUseCase(new SupabaseAuthRepository(), new CreateUserUseCase(new SupabaseUserRepository())),
         new SignupUseCase(new SupabaseAuthRepository(), new EmailValidator(new SupabaseAuthRepository()))
     );
 

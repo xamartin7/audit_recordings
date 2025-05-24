@@ -1,5 +1,5 @@
 import { AuthToken } from "../../domain/AuthToken";
-import { User } from "../../domain/User";
+import { User } from "../../../users/domain/User";
 import { AuthRepository } from "../interfaces/AuthRepository";
 import { AuthSchema } from "api-types/src/AuthSchema";
 

@@ -26,7 +26,7 @@ export function AuthCallbackScreen() {
                 const data = await response.json();
                 console.log('data', data);
                 if (event === 'SIGNED_IN' && session) {
-                    //navigate('/home');
+                    navigate('/home');
                 }
             })
             .catch((error) => {

@@ -47,5 +47,8 @@ describe("LoginWithEmailUseCase", () => {
 
         // Assert
         expect(result).toEqual({user: mockUser, authToken: mockAuthToken});
+        expect(mockSupabaseAuthRepository.findUserByEmail).toHaveBeenCalledWith(mockUser.getEmail());
+        expect(mockSupabaseAuthRepository.verifyPassword).toHaveBeenCalledWith(mockUser.getEmail(), mockUser.getPassword());
+        expect(mockSupabaseAuthRepository.generateToken).toHaveBeenCalledWith(mockUser);
     });
 });

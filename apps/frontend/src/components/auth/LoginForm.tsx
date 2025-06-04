@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { login } from '../../adapters/api/auth/Login';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { useAuth } from '../../hooks/auth/useAuth';
 interface LoginFormData {
     email: string;
     password: string;
@@ -12,6 +13,7 @@ export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccess
     const { register, handleSubmit } = useForm<LoginFormData>();
     const [isPending, startTransition] = useTransition();
     const navigate = useNavigate();
+    const { authenticate } = useAuth()
 
     const onSubmit = (data: LoginFormData) => {
         setError('');
@@ -19,19 +21,20 @@ export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccess
             login(data.email, data.password)
             .then(async (response) => {
                 const data = await response.json();
-            console.log(data);
-            if (response.status === 200) {
-                setSuccessMessage('Sesión iniciada correctamente');
-                navigate('/home');
-            } else {
-                setError(data.message);
-            }
-        })
-        .catch((error) => {
-            if (error.type === 'validation') {
-                setError((error.errors as { message: string }[]).map(e => e.message).join(', '));
-            } else {
-                console.error(error);
+                console.log(data);
+                if (response.status === 200) {
+                    setSuccessMessage('Sesión iniciada correctamente');
+                    authenticate(data);
+                    navigate('/home');
+                } else {
+                    setError(data.message);
+                }
+            })
+            .catch((error) => {
+                if (error.type === 'validation') {
+                    setError((error.errors as { message: string }[]).map(e => e.message).join(', '));
+                } else {
+                    console.error(error);
                     setError('Error en el servidor');
                 }
             });

@@ -4,6 +4,8 @@ import { login } from '../../adapters/api/auth/Login';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useAuth } from '../../hooks/auth/useAuth';
+import { UserDTO } from 'shared/src/Auth.t';
+
 interface LoginFormData {
     email: string;
     password: string;
@@ -21,10 +23,11 @@ export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccess
             login(data.email, data.password)
             .then(async (response) => {
                 const data = await response.json();
+                // TODO Verify if the data is a UserDTO with zod ?
                 console.log(data);
                 if (response.status === 200) {
                     setSuccessMessage('Sesión iniciada correctamente');
-                    authenticate(data);
+                    authenticate(data.user as UserDTO, data.authToken as string);
                     navigate('/home');
                 } else {
                     setError(data.message);

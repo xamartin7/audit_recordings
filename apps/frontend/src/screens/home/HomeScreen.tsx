@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
 import { EnvConfig } from '../../utils/EnvConfig';
 import { Button } from '@mui/material';
+import { useAuth } from '../../hooks/auth/useAuth';
 
 const supabase = createClient(
     EnvConfig.getEnvVariables().supabaseUrl,
@@ -12,6 +13,7 @@ const supabase = createClient(
 export function HomeScreen() {
     const [active, setActive] = useState('home');
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
     const handleSignOut = async () => {
         try {
@@ -19,6 +21,7 @@ export function HomeScreen() {
             if (error) {
                 console.error('Error signing out:', error.message);
             } else {
+                logout();
                 navigate('/login');
             }
         } catch (error) {
@@ -47,7 +50,7 @@ export function HomeScreen() {
                 <div className="bg-white shadow-md p-4 flex justify-between items-center">
                     <div className="text-xl font-bold text-gray-900">{active.charAt(0).toUpperCase() + active.slice(1)}</div>
                     <div className="flex items-center gap-4">
-                        <div className="text-gray-500">Welcome, User</div>
+                        <div className="text-gray-500">Welcome, {user?.name}</div>
                         <Button
                             variant="outlined"
                             color="primary"

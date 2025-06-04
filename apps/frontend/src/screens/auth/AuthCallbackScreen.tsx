@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { EnvConfig } from '../../utils/EnvConfig';
 import { loginWithGoogle } from '../../adapters/api/auth/Login';
 import { useAuth } from '../../hooks/auth/useAuth';
+import { UserDTO } from 'shared/src/Auth.t';
 
 const supabase = createClient(
     EnvConfig.getEnvVariables().supabaseUrl,
@@ -28,7 +29,7 @@ export function AuthCallbackScreen() {
                 const data = await response.json();
                 console.log('data', data);
                 if (event === 'SIGNED_IN' && session) {
-                    authenticate(data);
+                    authenticate(data.user as UserDTO, data.authToken as string);
                     navigate('/home');
                 }
             })

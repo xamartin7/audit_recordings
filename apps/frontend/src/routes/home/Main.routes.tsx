@@ -1,9 +1,12 @@
+import { ProtectedRoute } from "../../components/protect-routes/ProtectedRoute"
 import { HomeScreen } from "../../screens/home/HomeScreen"
 
 const mainRoutes = [
     {
         path: '/home',
-        element: <HomeScreen />,
+        element: <ProtectedRoute>
+                    <HomeScreen />
+                </ProtectedRoute>,
     }
 ]
 

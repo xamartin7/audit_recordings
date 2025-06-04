@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
 import { EnvConfig } from '../../utils/EnvConfig';
 import { loginWithGoogle } from '../../adapters/api/auth/Login';
+import { useAuth } from '../../hooks/auth/useAuth';
 
 const supabase = createClient(
     EnvConfig.getEnvVariables().supabaseUrl,
@@ -11,6 +12,7 @@ const supabase = createClient(
 
 export function AuthCallbackScreen() {
     const navigate = useNavigate();
+    const { authenticate } = useAuth();
 
     useEffect(() => {
         // TODO Get the session access token and save it in the local storage, but before send it to the backend,
@@ -26,6 +28,7 @@ export function AuthCallbackScreen() {
                 const data = await response.json();
                 console.log('data', data);
                 if (event === 'SIGNED_IN' && session) {
+                    authenticate(data);
                     navigate('/home');
                 }
             })

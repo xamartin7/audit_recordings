@@ -5,6 +5,7 @@ import { EnvConfig } from '../../utils/EnvConfig';
 import { loginWithGoogle } from '../../adapters/api/auth/Login';
 import { useAuth } from '../../hooks/auth/useAuth';
 import { UserDTO } from 'shared/src/Auth.t';
+import { AuthTokenBackendSchema, UserDTOBackendSchema } from 'api-types/src/AuthSchema';
 
 const supabase = createClient(
     EnvConfig.getEnvVariables().supabaseUrl,
@@ -21,15 +22,22 @@ export function AuthCallbackScreen() {
 
 
         supabase.auth.onAuthStateChange((event, session) => {
-            console.log('event', event);
-            console.log('session', session);
-            console.log('session?.access_token', session?.access_token);
             loginWithGoogle(session?.access_token ?? '')
             .then(async (response) => {
                 const data = await response.json();
-                console.log('data', data);
+                const userData = UserDTOBackendSchema.parse(data.user);
+                const tokenData = AuthTokenBackendSchema.parse(data.authToken);
+                const user: UserDTO = {
+                    id: userData.id,
+                    email: userData.email,
+                    name: userData.name,
+                    surname: userData.surname,
+                    second_surname: userData.second_surname,
+                    created_at: new Date(userData.created_at),
+                    password: userData.password,
+                }
                 if (event === 'SIGNED_IN' && session) {
-                    authenticate(data.user as UserDTO, data.authToken as string);
+                    authenticate(user, tokenData.token);
                     navigate('/home');
                 }
             })

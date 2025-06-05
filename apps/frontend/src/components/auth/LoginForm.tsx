@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useAuth } from '../../hooks/auth/useAuth';
 import { UserDTO } from 'shared/src/Auth.t';
+import { AuthTokenBackendSchema, UserDTOBackendSchema } from 'api-types/src/AuthSchema';
 
 interface LoginFormData {
     email: string;
@@ -23,11 +24,21 @@ export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccess
             login(data.email, data.password)
             .then(async (response) => {
                 const data = await response.json();
-                // TODO Verify if the data is a UserDTO with zod ?
+                const userData = UserDTOBackendSchema.parse(data.user);
+                const user: UserDTO = {
+                    id: userData.id,
+                    email: userData.email,
+                    name: userData.name,
+                    surname: userData.surname,
+                    second_surname: userData.second_surname,
+                    created_at: new Date(userData.created_at),
+                    password: userData.password,
+                }
+                const authTokenData = AuthTokenBackendSchema.parse(data.authToken);
                 console.log(data);
                 if (response.status === 200) {
                     setSuccessMessage('Sesión iniciada correctamente');
-                    authenticate(data.user as UserDTO, data.authToken as string);
+                    authenticate(user, authTokenData.token);
                     navigate('/home');
                 } else {
                     setError(data.message);

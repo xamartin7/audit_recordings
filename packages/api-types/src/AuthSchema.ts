@@ -18,4 +18,19 @@ export const AuthSchema = {
     }),
 }
 
+export const UserDTOBackendSchema = z.object({
+    id: z.number(),
+    email: z.string().email(),
+    name: z.string(),
+    surname: z.string(),
+    second_surname: z.string(),
+    created_at: z.string(),
+    password: z.string(),
+})
+
+export const AuthTokenBackendSchema = z.object({
+    token: z.string(),
+    expiresAt: z.string(),
+})
+
 export type AuthSchema = z.infer<typeof AuthSchema.emailLogin> | z.infer<typeof AuthSchema.googleLogin>;

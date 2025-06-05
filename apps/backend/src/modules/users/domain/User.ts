@@ -2,7 +2,7 @@ import { UserDTO } from "shared/src/Auth.t";
 
 
 export class User {
-    private id: string;
+    private id: number;
     private created_at: Date;
     private email: string;
     private password: string;
@@ -30,11 +30,11 @@ export class User {
         this.second_surname = user.second_surname;
     }
 
-    public getId(): string {
+    public getId(): number {
         return this.id;
     }
 
-    public setId(id: string): void {
+    public setId(id: number): void {
         this.id = id;
     }
 

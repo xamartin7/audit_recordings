@@ -28,7 +28,7 @@ export const Topnav: React.FC<{active: string}> = ({active}) => {
     };
 
     return (
-        <div className="bg-white shadow-md p-4 flex justify-between items-center">
+        <div className="bg-white shadow-md p-3 flex justify-between items-center">
             <div className="text-xl font-bold text-gray-900">{active.charAt(0).toUpperCase() + active.slice(1)}</div>
             <div className="flex items-center gap-4">
                 <div className="text-gray-500">Welcome, {user?.name} {user?.surname}</div>

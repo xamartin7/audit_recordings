@@ -24,19 +24,18 @@ export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccess
             login(data.email, data.password)
             .then(async (response) => {
                 const data = await response.json();
-                const userData = UserDTOBackendSchema.parse(data.user);
-                const user: UserDTO = {
-                    id: userData.id,
-                    email: userData.email,
-                    name: userData.name,
-                    surname: userData.surname,
-                    second_surname: userData.second_surname,
-                    created_at: new Date(userData.created_at),
-                    password: userData.password,
-                }
-                const authTokenData = AuthTokenBackendSchema.parse(data.authToken);
-                console.log(data);
                 if (response.status === 200) {
+                    const userData = UserDTOBackendSchema.parse(data.user);
+                    const user: UserDTO = {
+                        id: userData.id,
+                        email: userData.email,
+                        name: userData.name,
+                        surname: userData.surname,
+                        second_surname: userData.second_surname,
+                        created_at: new Date(userData.created_at),
+                        password: userData.password,
+                    }
+                    const authTokenData = AuthTokenBackendSchema.parse(data.authToken);
                     setSuccessMessage('Sesión iniciada correctamente');
                     authenticate(user, authTokenData.token);
                     navigate('/home');

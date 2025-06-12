@@ -4,7 +4,7 @@ import { User } from "../../domain/User";
 export class UserCreator {
     public static create(data: SignupData): User {
         return new User({
-            id: '',
+            id: 0,
             created_at: new Date(),
             email: data.email,
             password: data.password,
@@ -16,7 +16,7 @@ export class UserCreator {
 
     public static createFromGoogle(email: string, fullName: string): User {
         return new User({
-            id: '',
+            id: 0,
             created_at: new Date(),
             email: email,
             password: '',

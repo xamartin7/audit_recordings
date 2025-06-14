@@ -44,6 +44,9 @@ export const Sidebar = () => {
                                 <span className="ml-3">Home</span>
                             </Link>
                         </li>
+                    </ul>
+                    
+                    <ul className="fixed bottom-0 space-y-2 font-medium mb-4 w-56">
                         <li>
                             <button onClick={handleSignOut} className="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <FaSignOutAlt className="w-6 h-6" />

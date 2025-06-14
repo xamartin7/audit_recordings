@@ -1,5 +1,5 @@
 import { Sidebar } from '../../components/common/Sidebar';
-import { Topnav } from '../../components/common/Topnav';
+//import { Topnav } from '../../components/common/Topnav';
 
 export function HomeScreen() {
 
@@ -11,7 +11,7 @@ export function HomeScreen() {
             {/* Main content */}
             <div className="flex-1 flex flex-col">
                 {/* Top navigation */}
-                <Topnav></Topnav>
+                {/* <Topnav></Topnav> */}
 
                 {/* Content area */}
                 <div className="flex-1 p-6">

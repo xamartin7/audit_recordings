@@ -20,23 +20,24 @@ export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccess
 
     const onSubmit = (data: LoginFormData) => {
         setError('');
+        // TODO Change it a traditional login variable instead of use useTransition. Start transitions now works correctly when
+        // the async functions are structured with .then and .catch. It needs to wrap all await functions.
         startTransition(() => {
             login(data.email, data.password)
             .then(async (response) => {
                 const data = await response.json();
-                const userData = UserDTOBackendSchema.parse(data.user);
-                const user: UserDTO = {
-                    id: userData.id,
-                    email: userData.email,
-                    name: userData.name,
-                    surname: userData.surname,
-                    second_surname: userData.second_surname,
-                    created_at: new Date(userData.created_at),
-                    password: userData.password,
-                }
-                const authTokenData = AuthTokenBackendSchema.parse(data.authToken);
-                console.log(data);
                 if (response.status === 200) {
+                    const userData = UserDTOBackendSchema.parse(data.user);
+                    const user: UserDTO = {
+                        id: userData.id,
+                        email: userData.email,
+                        name: userData.name,
+                        surname: userData.surname,
+                        second_surname: userData.second_surname,
+                        created_at: new Date(userData.created_at),
+                        password: userData.password,
+                    }
+                    const authTokenData = AuthTokenBackendSchema.parse(data.authToken);
                     setSuccessMessage('Sesión iniciada correctamente');
                     authenticate(user, authTokenData.token);
                     navigate('/home');
@@ -67,12 +68,13 @@ export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccess
             </div>
             <div>
                 <Button
-                    loading={isPending}
-                    loadingPosition="start"
-                    className="w-full"
                     type="submit"
                     variant="contained"
                     color="primary"
+                    className="w-full"
+                    disabled={isPending}
+                    loading={isPending}
+                    loadingPosition="start"
                 >
                     Login
                 </Button>

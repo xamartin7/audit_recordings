@@ -1,4 +1,4 @@
-import React, { useTransition } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { login } from '../../adapters/api/auth/Login';
 import { useNavigate } from 'react-router-dom';
@@ -14,45 +14,45 @@ interface LoginFormData {
 
 export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccessMessage: (message: string) => void }> = ({ setError, setSuccessMessage }) => {
     const { register, handleSubmit } = useForm<LoginFormData>();
-    const [isPending, startTransition] = useTransition();
     const navigate = useNavigate();
     const { authenticate } = useAuth()
+    const [isPending, setIsPending] = useState(false);
 
     const onSubmit = (data: LoginFormData) => {
         setError('');
-        // TODO Change it a traditional login variable instead of use useTransition. Start transitions now works correctly when
-        // the async functions are structured with .then and .catch. It needs to wrap all await functions.
-        startTransition(() => {
-            login(data.email, data.password)
-            .then(async (response) => {
-                const data = await response.json();
-                if (response.status === 200) {
-                    const userData = UserDTOBackendSchema.parse(data.user);
-                    const user: UserDTO = {
-                        id: userData.id,
-                        email: userData.email,
-                        name: userData.name,
-                        surname: userData.surname,
-                        second_surname: userData.second_surname,
-                        created_at: new Date(userData.created_at),
-                        password: userData.password,
-                    }
-                    const authTokenData = AuthTokenBackendSchema.parse(data.authToken);
-                    setSuccessMessage('Sesión iniciada correctamente');
-                    authenticate(user, authTokenData.token);
-                    navigate('/home');
-                } else {
-                    setError(data.message);
+        setIsPending(true);
+        login(data.email, data.password)
+        .then(async (response) => {
+            const data = await response.json();
+            if (response.status === 200) {
+                const userData = UserDTOBackendSchema.parse(data.user);
+                const user: UserDTO = {
+                    id: userData.id,
+                    email: userData.email,
+                    name: userData.name,
+                    surname: userData.surname,
+                    second_surname: userData.second_surname,
+                    created_at: new Date(userData.created_at),
+                    password: userData.password,
                 }
-            })
-            .catch((error) => {
-                if (error.type === 'validation') {
-                    setError((error.errors as { message: string }[]).map(e => e.message).join(', '));
-                } else {
-                    console.error(error);
-                    setError('Error en el servidor');
-                }
-            });
+                const authTokenData = AuthTokenBackendSchema.parse(data.authToken);
+                setSuccessMessage('Sesión iniciada correctamente');
+                authenticate(user, authTokenData.token);
+                navigate('/home');
+            } else {
+                setError(data.message);
+            }
+        })
+        .catch((error) => {
+            if (error.type === 'validation') {
+                setError((error.errors as { message: string }[]).map(e => e.message).join(', '));
+            } else {
+                console.error(error);
+                setError('Error en el servidor');
+            }
+        })
+        .finally(() => {
+            setIsPending(false);
         });
     }
 
@@ -74,7 +74,6 @@ export const LoginForm: React.FC<{ setError: (error: string) => void, setSuccess
                     className="w-full"
                     disabled={isPending}
                     loading={isPending}
-                    loadingPosition="start"
                 >
                     Login
                 </Button>

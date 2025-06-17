@@ -1,5 +1,6 @@
 import { ProtectedRoute } from "../../components/protect-routes/ProtectedRoute"
 import { HomeScreen } from "../../screens/home/HomeScreen"
+import { VideoScheduleScreen } from "../../screens/video-schedule/VideoScheduleScreen"
 
 const mainRoutes = [
     {
@@ -7,6 +8,12 @@ const mainRoutes = [
         element: <ProtectedRoute>
                     <HomeScreen />
                 </ProtectedRoute>,
+    },
+    {
+        path: '/video-schedule',
+        element: <ProtectedRoute>
+            <VideoScheduleScreen />
+        </ProtectedRoute>,
     }
 ]
 

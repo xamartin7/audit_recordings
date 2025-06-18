@@ -1,5 +1,8 @@
+import { createClient } from "@supabase/supabase-js";
 import { useState, useRef, useEffect } from "react";
 import { FaStop, FaVideo, FaCamera, FaTimes } from "react-icons/fa";
+
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 
 export function VideoRecorder() {
     const [isRecording, setIsRecording] = useState(false);
@@ -96,8 +99,15 @@ export function VideoRecorder() {
     }
 
     async function storeVideo(video: Blob) {
-       // TODO
-       console.log('Storing video to supabase', video);
+        console.log('Storing video to supabase', video);
+        const { data, error } = await supabase.storage.from('videos').upload('video.webm', video, {
+            upsert: true,
+        });
+        if (error) {
+            console.error('Error storing video:', error);
+        } else {
+            console.log('Video stored successfully:', data);
+        }
     }
 
     async function loadDevices() {

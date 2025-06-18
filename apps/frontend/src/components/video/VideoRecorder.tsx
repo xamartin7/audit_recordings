@@ -9,7 +9,8 @@ export function VideoRecorder() {
     const streamRef = useRef<MediaStream | null>(null);
     const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+    const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
+    const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
     const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | null>(null);
 
     useEffect(() => {
@@ -102,7 +103,8 @@ export function VideoRecorder() {
     async function loadDevices() {
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
-            setDevices(devices);
+            setVideoDevices(devices.filter(device => device.kind === 'videoinput'));
+            setAudioDevices(devices.filter(device => device.kind === 'audioinput'));
             console.log('Devices:', devices);
         } catch (err) {
             console.error('Error enumerating devices:', err);
@@ -115,8 +117,15 @@ export function VideoRecorder() {
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <video ref={videoRef} autoPlay className="w-full max-w-md mb-4 border border-gray-300 rounded-md" />
             <div className="flex gap-2 mb-4">
-                <select onChange={(e) => setSelectedDevice(devices.find(d => d.deviceId === e.target.value) || null)}>
-                    {devices.map((device) => (
+                <select onChange={(e) => setSelectedDevice(videoDevices.find(d => d.deviceId === e.target.value) || null)}>
+                    {videoDevices.map((device) => (
+                        <option key={device.deviceId} value={device.deviceId}>
+                            {device.label}
+                        </option>
+                    ))}
+                </select>
+                <select onChange={(e) => setSelectedDevice(audioDevices.find(d => d.deviceId === e.target.value) || null)}>
+                    {audioDevices.map((device) => (
                         <option key={device.deviceId} value={device.deviceId}>
                             {device.label}
                         </option>
